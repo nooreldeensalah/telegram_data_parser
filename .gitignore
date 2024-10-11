@@ -1,4 +1,5 @@
 files/
+extracted/
 *.session
 
 # Byte-compiled / optimized / DLL files
