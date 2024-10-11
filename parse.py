@@ -72,6 +72,26 @@ def parse_credentials_from_file_paths(file_paths):
 
 # Parse all files and get credentials
 parsed_data = parse_credentials_from_file_paths(PASSWORD_FILES_DIRS)
-# Print or process the parsed data
-for entry in parsed_data:
-    print(entry)
+
+from pymongo import MongoClient
+
+# MongoDB Setup
+client = MongoClient('mongodb://localhost:27017/')  # Update the connection string if using MongoDB Atlas or another setup
+db = client['credentials_db']  # Create/use database
+collection = db['credentials']  # Create/use collection
+
+collection.create_index("URL")
+collection.create_index("Username")
+
+# Function to insert parsed data into MongoDB
+def insert_into_mongodb(data):
+    try:
+        if data:
+            result = collection.insert_many(data)  # Efficient bulk insert
+            print(f"Inserted {len(result.inserted_ids)} documents into MongoDB")
+        else:
+            print("No data to insert")
+    except Exception as e:
+        print(f"Error inserting into MongoDB: {e}")
+        
+insert_into_mongodb(parsed_data)
