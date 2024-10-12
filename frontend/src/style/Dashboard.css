@@ -1,0 +1,79 @@
+.dashboard {
+  padding: 20px;
+  background-color: #f4f4f4; /* Light background for better contrast */
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #282c34;
+  color: white;
+  padding: 1rem;
+}
+
+.navbar h2 {
+  margin: 0;
+}
+
+.navbar button {
+  background-color: #61dafb;
+  border: none;
+  color: #282c34;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.navbar button:hover {
+  background-color: #21a1f1;
+}
+
+.filter-container {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px; /* Spacing between inputs */
+}
+
+.filter-container input {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  flex: 1; /* Make inputs fill available space */
+}
+
+.filter-container button {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  background-color: #61dafb;
+  border: none;
+  cursor: pointer;
+}
+
+.filter-container button:hover {
+  background-color: #21a1f1;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+table th {
+  background-color: #f2f2f2; /* Light background for header */
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+}
