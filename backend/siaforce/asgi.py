@@ -1,5 +1,5 @@
 """
-ASGI config for credentials_dashboard project.
+ASGI config for siaforce project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'credentials_dashboard.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'siaforce.settings')
 
 application = get_asgi_application()
