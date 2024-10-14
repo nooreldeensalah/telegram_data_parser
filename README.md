@@ -11,6 +11,7 @@ The project leverages concurrency when applicable to improve performance
 - Python 3.7 or higher
 - Telegram API credentials (`API_ID`, `API_HASH`, and `PHONE_NUMBER`)
 - MongoDB Instance
+- `7z`
 
 ## Installation
 
@@ -53,15 +54,29 @@ DOWNLOAD_PATH = <download_path>
 EXTRACTION_PATH = <extraction_path>
 FEHU_LOGS_PASSWORD = <fehu_logs_password>
 
-# Django backend
+# Backend variables
 DJANGO_SECRET_KEY = <secret_key>
 MONGODB_URI = <mongo_db_uri>
-
-# React frontend
-REACT_APP_API_URL=<react_app_uri>
 ```
 
 ## Usage
+
+### Dependencies
+
+- The extraction uses `7z`, I've picked `7z` because the performance of `rarfile` and `zipfile` was slow.
+- Make sure to install `7z` on your system:
+
+```bash
+# To install 7z using Chocolatey
+choco install 7zip
+```
+
+And to install `7z` on **Debian-based** systems:
+
+```bash
+sudo apt update
+sudo apt install p7zip-full p7zip-rar
+```
 
 The scripts are intended to be run in this order:
 
@@ -80,11 +95,20 @@ In the backend application, you can create an initial user that has the credenti
 python manage.py migrate
 # Create initial user
 python manage.py createinitialuser
+# Running the backend application
+python manage.py runserver 0.0.0.0:8000
 ```
 
-And to run the frontend application, you can either use the development, or create a production build that can be served using a production tool
+And to run the frontend application which uses `Vite`:
+
+To run the application in development mode:
 
 ```bash
-npm run dev # Development mode
-npm run build # Generate production build
+npm run dev
+```
+
+To create a servable production build:
+
+```bash
+npm run build
 ```
