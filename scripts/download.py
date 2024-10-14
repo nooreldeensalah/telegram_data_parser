@@ -15,7 +15,10 @@ PHONE_NUMBER = os.getenv('PHONE_NUMBER')
 
 # Define the channel to download files from and the destination folder
 CHANNEL_USERNAME = os.getenv('CHANNEL_USERNAME')
-DOWNLOAD_PATH = os.getenv('DOWNLOAD_PATH')
+DOWNLOAD_PATH = os.getenv('DOWNLOAD_PATH', 'files/')
+
+if not all([API_ID, API_HASH, PHONE_NUMBER, CHANNEL_USERNAME, DOWNLOAD_PATH]):
+    raise ValueError("Please set API_ID, API_HASH, PHONE_NUMBER, CHANNEL_USERNAME, and DOWNLOAD_PATH in .env file.")
 
 # Create the download folder if it doesn't exist
 if not os.path.exists(DOWNLOAD_PATH):
@@ -50,8 +53,12 @@ async def main():
     # Create the Telethon client
     client = TelegramClient('session_name', API_ID, API_HASH)
 
-    # Connect to the Telegram API
-    await client.start(PHONE_NUMBER)
+    try:
+        # Connect to the Telegram API
+        await client.start(PHONE_NUMBER)
+    except Exception as e:
+        print(f"Error starting client: {e}")
+        return
 
     # Get the channel entity
     channel = await client.get_entity(CHANNEL_USERNAME)
