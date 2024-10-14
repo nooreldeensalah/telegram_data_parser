@@ -1,4 +1,11 @@
 import os
+import re
+from itertools import zip_longest
+from dotenv import load_dotenv
+from pymongo import MongoClient
+
+# Load environment variables
+load_dotenv()
 
 # List of file names to match against (convert to lowercase to ensure case-insensitive matching)
 target_files = {file.lower() for file in {"passwords.txt", "password.txt", "pass.txt", 
@@ -6,22 +13,19 @@ target_files = {file.lower() for file in {"passwords.txt", "password.txt", "pass
                                           "password list.txt"}}
 
 # Directory to search
-search_directory = "extracted/"
+search_directory = os.getenv('EXTRACTION_PATH')
 
 # Function to search files in all subdirectories
 def find_matching_files(directory, target_set):
-    PASSWORD_FILES_DIRS = []
+    PASSWORD_FILES_PATHS = []
     for root, dirs, files in os.walk(directory):
         for file_name in files:
             if file_name.lower() in target_set:
-                PASSWORD_FILES_DIRS.append(os.path.join(root, file_name))
-    return PASSWORD_FILES_DIRS
+                PASSWORD_FILES_PATHS.append(os.path.join(root, file_name))
+    return PASSWORD_FILES_PATHS
 
 # Example usage
-PASSWORD_FILES_DIRS = find_matching_files(search_directory, target_files)
-
-import re
-from itertools import zip_longest
+PASSWORD_FILES_PATHS = find_matching_files(search_directory, target_files)
 
 # Define regex patterns to extract URL/Host, Username/Login, Password, and Application/Storage/Soft
 url_pattern = re.compile(r"(URL|Host):\s*(.+)")
@@ -71,23 +75,19 @@ def parse_credentials_from_file_paths(file_paths):
     return all_credentials
 
 # Parse all files and get credentials
-parsed_data = parse_credentials_from_file_paths(PASSWORD_FILES_DIRS)
-
-from pymongo import MongoClient
+parsed_data = parse_credentials_from_file_paths(PASSWORD_FILES_PATHS)
 
 # MongoDB Setup
-client = MongoClient('mongodb://localhost:27017/')  # Update the connection string if using MongoDB Atlas or another setup
-db = client['credentials_db']  # Create/use database
-collection = db['credentials']  # Create/use collection
-
-collection.create_index("URL")
-collection.create_index("Username")
+MONGODB_URI = os.getenv('MONGODB_URI')
+client = MongoClient(MONGODB_URI)
+db = client['siaforce_db']
+collection = db['credentials']
 
 # Function to insert parsed data into MongoDB
 def insert_into_mongodb(data):
     try:
         if data:
-            result = collection.insert_many(data)  # Efficient bulk insert
+            result = collection.insert_many(data)
             print(f"Inserted {len(result.inserted_ids)} documents into MongoDB")
         else:
             print("No data to insert")

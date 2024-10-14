@@ -17,7 +17,6 @@ PHONE_NUMBER = os.getenv('PHONE_NUMBER')
 CHANNEL_USERNAME = os.getenv('CHANNEL_USERNAME')
 DOWNLOAD_PATH = os.getenv('DOWNLOAD_PATH')
 
-
 # Create the download folder if it doesn't exist
 if not os.path.exists(DOWNLOAD_PATH):
     os.makedirs(DOWNLOAD_PATH)

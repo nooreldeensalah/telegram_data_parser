@@ -4,10 +4,14 @@ import zipfile
 import rarfile
 import patoolib
 from getpass import getpass
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Set the directory where the compressed files are stored
-SOURCE_DIR = 'files/'  # Adjust this to your actual folder path
-EXTRACT_DIR = 'extracted/'  # Destination folder for extraction
+SOURCE_DIR = os.getenv('DOWNLOAD_PATH')
+EXTRACT_DIR = os.getenv('EXTRACTION_PATH')
 
 # Create the destination directory if it doesn't exist
 if not os.path.exists(EXTRACT_DIR):
