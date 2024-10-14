@@ -17,11 +17,11 @@ const Login = ({ onLogin }) => {
         password,
       });
 
-      const { token } = response.data;
-      localStorage.setItem("token", token); // Save the token
+      const { access } = response.data;
+      localStorage.setItem("token", access);
       onLogin();
     } catch (err) {
-      setError("Invalid credentials");
+      setError("Invalid credentials:", err);
     }
   };
 

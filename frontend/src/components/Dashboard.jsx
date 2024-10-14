@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "../style/Dashboard.css";
 
@@ -10,6 +10,7 @@ const Dashboard = ({ onLogout }) => {
   const [urlFilter, setURLFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [inputPage, setInputPage] = useState("");
 
   // Fetch credentials with optional filters
   const fetchCredentials = async (page = 1) => {
@@ -27,7 +28,7 @@ const Dashboard = ({ onLogout }) => {
       if (urlFilter) params.url = urlFilter;
 
       const response = await axios.get(url, {
-        headers: { Authorization: `Token ${token}` },
+        headers: { Authorization: `Bearer ${token}` },
         params: params, // Send filters as query parameters
       });
 
@@ -73,6 +74,27 @@ const Dashboard = ({ onLogout }) => {
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       fetchCredentials(currentPage - 1);
+    }
+  };
+
+  // Handle direct page input navigation
+  const handlePageInputChange = (event) => {
+    setInputPage(event.target.value);
+  };
+
+  const goToPage = () => {
+    const pageNumber = parseInt(inputPage, 10);
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      fetchCredentials(pageNumber);
+      setInputPage(""); // Clear the input after navigation
+    } else {
+      alert("Invalid page number");
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      goToPage();
     }
   };
 
@@ -151,6 +173,14 @@ const Dashboard = ({ onLogout }) => {
             >
               Next
             </button>
+            <input
+              type="text"
+              value={inputPage}
+              onChange={handlePageInputChange}
+              onKeyPress={handleKeyPress}
+              placeholder="Go to page..."
+            />
+            <button onClick={goToPage}>Go</button>
           </div>
         </>
       )}
