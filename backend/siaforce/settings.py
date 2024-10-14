@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,14 +41,13 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
     'rest_framework',
-    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     'api',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -106,9 +106,9 @@ WSGI_APPLICATION = 'siaforce.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'credentials_db',
+        'NAME': 'siaforce_db',
         'CLIENT': {
-            'host': 'mongodb://localhost:27017',
+            'host': os.getenv('MONGODB_URI'),
         }
     }
 }

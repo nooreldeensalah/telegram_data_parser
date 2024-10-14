@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Credential
+from .models import Credentials
 
-class CredentialSerializer(serializers.ModelSerializer):
+class CredentialsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Credential
+        model = Credentials
         fields = '__all__'

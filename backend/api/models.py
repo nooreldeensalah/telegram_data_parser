@@ -1,11 +1,11 @@
 from djongo import models
 
-class Credential(models.Model):
+class Credentials(models.Model):
     id = models.CharField(max_length=255,primary_key=True ,db_column='_id')
-    url = models.CharField(max_length=255, db_column='URL')
-    username = models.CharField(max_length=255, db_column='Username')
-    password = models.CharField(max_length=255, db_column='Password')
-    application = models.CharField(max_length=255, db_column='Application')
+    url = models.CharField(max_length=255)
+    username = models.CharField(max_length=255, null=True)
+    password = models.CharField(max_length=255, null=True)
+    application = models.CharField(max_length=255, null=True)
     class Meta:
         db_table = "credentials"
 
