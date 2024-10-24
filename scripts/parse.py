@@ -13,8 +13,8 @@ load_dotenv()
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # List of file names to match against
-target_files = {file.lower() for file in {"passwords.txt", "password.txt", "pass.txt", 
-                                          "all passwords.txt", "_allPasswords_list.txt", 
+target_files = {file.lower() for file in {"passwords.txt", "password.txt", "pass.txt",
+                                          "all passwords.txt", "_allPasswords_list.txt",
                                           "password list.txt"}}
 
 # Directory to search
@@ -47,7 +47,7 @@ def parse_credentials_from_file(file_path):
     # Find all occurrences of each field using regex
     urls = [url[1] for url in url_pattern.findall(data)]
     usernames = [username[1] for username in username_pattern.findall(data)]
-    passwords = [password[0] for password in password_pattern.findall(data)]
+    passwords = [password for password in password_pattern.findall(data)]
     applications = [application[1] for application in application_pattern.findall(data)]
 
     # Zip results together
@@ -60,7 +60,7 @@ def parse_credentials_from_file(file_path):
         }
         for url, username, password, application in zip_longest(urls, usernames, passwords, applications, fillvalue=None)
     ]
-    
+
     return credentials
 
 def insert_into_mongodb(data):
@@ -82,10 +82,10 @@ def insert_into_mongodb(data):
 def parse_credentials_from_file_paths(file_paths):
     """Parse credentials from a list of file paths using concurrent processing."""
     all_credentials = []
-    
+
     with ThreadPoolExecutor() as executor:
         future_to_file = {executor.submit(parse_credentials_from_file, file_path): file_path for file_path in file_paths}
-        
+
         for future in as_completed(future_to_file):
             file_path = future_to_file[future]
             try:
@@ -94,7 +94,7 @@ def parse_credentials_from_file_paths(file_paths):
                 logging.info(f"Parsed {len(credentials)} credentials from {file_path}")
             except Exception as e:
                 logging.error(f"Error parsing {file_path}: {e}")
-    
+
     return all_credentials
 
 # Main execution
