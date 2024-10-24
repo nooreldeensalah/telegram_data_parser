@@ -3,6 +3,12 @@
   background-color: #f4f4f4; /* Light background for better contrast */
 }
 
+.disabled-link {
+  pointer-events: none;
+  color: grey; /* Optionally change the color to indicate that it's not clickable */
+  text-decoration: none;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;

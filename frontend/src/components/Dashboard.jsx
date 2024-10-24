@@ -151,6 +151,7 @@ const Dashboard = ({ onLogout }) => {
                       href={credential.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      className="disabled-link"
                     >
                       {credential.url}
                     </a>
