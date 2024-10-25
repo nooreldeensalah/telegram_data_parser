@@ -91,7 +91,7 @@ def parse_credentials_from_file_paths(file_paths):
             try:
                 credentials = future.result()
                 all_credentials.extend(credentials)
-                logging.info(f"Parsed {len(credentials)} credentials from {file_path}")
+                # logging.info(f"Parsed {len(credentials)} credentials from {file_path}")
             except Exception as e:
                 logging.error(f"Error parsing {file_path}: {e}")
 
