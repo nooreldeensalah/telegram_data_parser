@@ -1,0 +1,21 @@
+# Ignore node_modules and other dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Ignore local environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore build output
+dist
+build
+
+# Ignore MacOS system files
+.DS_Store
+
+# Ignore logs and temporary files
+*.log
+*.tmp

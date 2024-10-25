@@ -1,0 +1,63 @@
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    networks:
+      - siaforce_network
+    ports:
+      - "27017:27017"
+    restart: "unless-stopped"
+
+  data-preparation:
+    build: scripts
+    container_name: python-scripts-app
+    networks:
+      - siaforce_network
+    restart: "no"
+    stdin_open: true
+    depends_on:
+      - mongodb
+    environment:
+      - API_ID=${API_ID}
+      - API_HASH=${API_HASH}
+      - PHONE_NUMBER=${PHONE_NUMBER}
+      - CHANNEL_USERNAME=${CHANNEL_USERNAME}
+      - DOWNLOAD_PATH=${DOWNLOAD_PATH}
+      - EXTRACTION_PATH=${EXTRACTION_PATH}
+      - FEHU_LOGS_PASSWORD=${FEHU_LOGS_PASSWORD}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - MONGODB_URI=${MONGODB_URI}
+
+  django-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: django-backend
+    networks:
+      - siaforce_network
+    restart: "unless-stopped"
+    depends_on:
+      data-preparation:
+        condition: service_completed_successfully
+    environment:
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - MONGODB_URI=${MONGODB_URI}
+    ports:
+      - "8000:8000"
+
+  vite-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: vite-frontend
+    networks:
+      - siaforce_network
+    restart: "unless-stopped"
+    depends_on:
+      - django-backend
+    ports:
+      - "3000:3000"
+
+networks:
+  siaforce_network:
+    driver: bridge
