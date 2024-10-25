@@ -1,8 +1,15 @@
-# Use the official Python image from the Docker Hub
+# Use the official Python slim image from the Docker Hub
 FROM python:slim
 
-# Install `7z`
-RUN apt-get update && apt-get install -y p7zip-full && rm -rf /var/lib/apt/lists/*
+# Install required utilities including wget
+RUN apt-get update && \
+    apt-get install -y wget p7zip-full && \
+    rm -rf /var/lib/apt/lists/*
+
+# Manually download and install p7zip-rar
+RUN wget http://ftp.debian.org/debian/pool/non-free/p/p7zip-rar/p7zip-rar_16.02-3_amd64.deb && \
+    dpkg -i p7zip-rar_16.02-3_amd64.deb && \
+    rm p7zip-rar_16.02-3_amd64.deb
 
 # Set the working directory inside the container
 WORKDIR /app
