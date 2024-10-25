@@ -1,5 +1,19 @@
 # Telegram Media Downloader
 
+- [Telegram Media Downloader](#telegram-media-downloader)
+  - [Requirements](#requirements)
+  - [Installation](#installation)
+    - [1. Clone the repository](#1-clone-the-repository)
+    - [2. Create a virtual environment](#2-create-a-virtual-environment)
+    - [3. Install dependencies](#3-install-dependencies)
+    - [4. Configure Environment Variables](#4-configure-environment-variables)
+  - [Usage](#usage)
+    - [Dependencies](#dependencies)
+    - [Creating an initial user](#creating-an-initial-user)
+  - [Deployment with Docker](#deployment-with-docker)
+    - [Steps](#steps)
+      - [Attach a terminal to the `data-preparation` container](#attach-a-terminal-to-the-data-preparation-container)
+
 A suite of Python-based scripts that support downloading files from a specific telegram channel, decompressing archived files, and parsing the password files for credentials and inserting them to a MongoDB database.
 
 The project also consists of a backend application written with `Django` and `Django Rest Framework` that provides an API for the parsed data, and a frontend `React` that displays the data in a dashboard page
