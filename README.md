@@ -5,7 +5,7 @@ A suite of Python-based scripts that support downloading files from a specific t
 The project also consists of a backend application written with `Django` and `Django Rest Framework` that provides an API for the parsed data, and a frontend `React` that displays the data in a dashboard page
 
 The project leverages concurrency when applicable to improve performance
-  
+
 ## Requirements
 
 - Python 3.7 or higher
@@ -46,17 +46,17 @@ pip install -r requirements.txt
 Create a .env file in the root directory of the project with the following content:
 
 ```.env
-API_ID = <telegram_api_id>
-API_HASH = <telegram_api_hash>
-PHONE_NUMBER = <telegram_phone_number>
-CHANNEL_USERNAME = <channel_id>
-DOWNLOAD_PATH = <download_path>
-EXTRACTION_PATH = <extraction_path>
-FEHU_LOGS_PASSWORD = <fehu_logs_password>
+API_ID=<telegram_api_id>
+API_HASH=<telegram_api_hash>
+PHONE_NUMBER=<telegram_phone_number>
+CHANNEL_USERNAME=<channel_id>
+DOWNLOAD_PATH=<download_path>
+EXTRACTION_PATH=<extraction_path>
+FEHU_LOGS_PASSWORD=<fehu_logs_password>
 
 # Backend variables
-DJANGO_SECRET_KEY = <secret_key>
-MONGODB_URI = <mongo_db_uri>
+DJANGO_SECRET_KEY=<secret_key>
+MONGODB_URI=<mongo_db_uri>
 ```
 
 ## Usage
@@ -112,3 +112,31 @@ To create a servable production build:
 ```bash
 npm run build
 ```
+
+## Deployment with Docker
+
+An easier and more straightforward to deploy the application would be with Docker, a docker-compose setup consisting of 4 services:
+
+- `mongodb`: A service to deploy a MongoDB locally.
+- `data-preparation`: A service to download the required archives, extract them, and parse them for the password credentials, and eventually insert them to MongoDB.
+- `backend`: A service to deploy the Django API application.
+- `frontend`: A service to deploy the React frontend application.
+
+### Steps
+
+- Add the `.env` file in the root directory.
+- Run the following commands:
+
+```bash
+docker compose up
+```
+
+#### Attach a terminal to the `data-preparation` container
+
+This will create the containers, but the `data-preparation` stage has to be completed, to do so, attach a terminal to the data preparation container and type the code received from the Telegram API, afterwards the files are decompressed and inserted to the database and the remaining containers will be started.
+
+```bash
+docker attach python-scripts-app
+```
+
+Afterwards, you can access the application at `http://localhost:3000`
