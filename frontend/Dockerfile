@@ -6,9 +6,6 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy the environment variables file
-COPY .env .env
-
 # Copy the rest of the application code
 COPY . .
 
